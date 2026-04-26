@@ -29,7 +29,7 @@ Then:
 // Loading an image, tracing with the 'posterized2' option preset, and appending the SVG to an element with id="svgcontainer"
 ImageTracer.imageToSVG(
 
-	'panda.png', /* input filename / URL */
+	'testimages/panda.png', /* input filename / URL */
 	
 	function(svgstr){ ImageTracer.appendSVGString( svgstr, 'svgcontainer' ); }, /* callback function to run on SVG string result */
 	
@@ -40,36 +40,24 @@ ImageTracer.imageToSVG(
 
 ### Using with Node.js
 
-Node.js Command line interface example:
+See [CLI.md](CLI.md) for full command-line interface documentation.
 
-```
-imagetracerjs/nodecli>node nodecli ../panda.png outfilename panda.svg scale 10
-```
+Quick example:
 
-Expected result:
-
-```
-imagetracerjs/nodecli/panda.svg was saved!
+```bash
+./imagetracer testimages/panda.png -o panda.svg --scale 10
 ```
 
 ---
 
 ## News
 
-### 1.2.6
- - NEW: [InkScape extension](#inkscape-extension)
- - FIXED: hole shape parent search (Issues #31 #39)
- - FIXED: Handle (absolute) paths in CLI correctly Issue #42
+### 1.3.0
+ - NEW: Rewritten CLI with modern argument parsing (see [CLI.md](CLI.md))
+ - NEW: Support for JPG, GIF, BMP, TIFF, WEBP formats via ImageMagick
+ - FIXED: Grayscale images now convert correctly
 
-### 1.2.5
- - RGBA ImageData check in colorquantization(), solving Issue #24 and #18
-
-### 1.2.4
- - ```options.layering``` : default 0 = sequential, new method ; 1 = parallel, old method. (Enhancement Issue #17)
- - case insensitive option preset names
- - README.md reorganizing
-
-[Version history](https://github.com/jankovicsandras/imagetracerjs/blob/master/version_history.md)
+See [CHANGELOG.md](CHANGELOG.md) for full changelog.
 
 ---
 
@@ -133,17 +121,17 @@ Include the script:
 ```
 Then
 ```javascript
-// Loading smiley.png, tracing and calling alert callback on the SVG string result 
-ImageTracer.imageToSVG( 'smiley.png', alert );
+// Loading smiley.png, tracing and calling alert callback on the SVG string result
+ImageTracer.imageToSVG( 'testimages/smiley.png', alert );
 
 
 // Almost the same with options, and the ImageTracer.appendSVGString callback will append the SVG
-ImageTracer.imageToSVG( 'smiley.png', ImageTracer.appendSVGString, { ltres:0.1, qtres:1, scale:10, strokewidth:5 } );
+ImageTracer.imageToSVG( 'testimages/smiley.png', ImageTracer.appendSVGString, { ltres:0.1, qtres:1, scale:10, strokewidth:5 } );
 
 
 // This uses the 'posterized2' option preset and appends the SVG to an element with id="svgcontainer"
 ImageTracer.imageToSVG(
-	'panda.png',
+	'testimages/panda.png',
 	function(svgstr){ ImageTracer.appendSVGString( svgstr, 'svgcontainer' ); },
 	'posterized2'
 );
@@ -152,25 +140,25 @@ ImageTracer.imageToSVG(
 // The helper function loadImage() loads an image to a canvas, then executing callback:
 // appending the canvas to a div here.
 ImageTracer.loadImage(
-	'panda.png',
+	'testimages/panda.png',
 	function(canvas){ (document.getElementById('canvascontainer')).appendChild(canvas); }
 );
 
 
 // ImageData can be traced to an SVG string synchronously.
 ImageTracer.loadImage(
-	'smiley.png',
+	'testimages/smiley.png',
 	function(canvas){
-	
+
 		// Getting ImageData from canvas with the helper function getImgdata().
 	 	var imgd = ImageTracer.getImgdata( canvas );
-	 	
+
 	 	// Synchronous tracing to SVG string
 	 	var svgstr = ImageTracer.imagedataToSVG( imgd, { scale:5 } );
-	 
+
 	 	// Appending SVG
 	 	ImageTracer.appendSVGString( svgstr, 'svgcontainer' );
-	 	
+
 	}
 );
 
@@ -178,7 +166,7 @@ ImageTracer.loadImage(
 // This will load an image, trace it when loaded, and execute callback on the tracedata:
 // stringifying and alerting it here.
 ImageTracer.imageToTracedata(
-	'smiley.png',
+	'testimages/smiley.png',
 	function(tracedata){ alert( JSON.stringify( tracedata ) ); },
 	{ ltres:0.1, qtres:1, scale:10 }
 );
@@ -186,7 +174,7 @@ ImageTracer.imageToTracedata(
 
 // imagedataToTracedata() is very similar to the previous functions. This returns tracedata synchronously.
 ImageTracer.loadImage(
-		'smiley.png',
+		'testimages/smiley.png',
 		function(canvas){ 
 		
 			// Getting ImageData from canvas with the helper function getImgdata().
@@ -202,20 +190,17 @@ ImageTracer.loadImage(
 
 ### Using with Node.js CLI
 
-Node.js Command line interface example:
+See [CLI.md](CLI.md) for full command-line documentation, supported formats, and all available options.
 
-```
-imagetracerjs/nodecli>node nodecli ../panda.png outfilename panda.svg scale 10
-```
+Quick examples:
 
-Expected result:
+```bash
+# Basic usage
+./imagetracer testimages/panda.png
 
+# With options
+./imagetracer testimages/panda.png -o panda.svg --scale 10 --preset posterized2
 ```
-imagetracerjs/nodecli/panda.svg was saved!
-```
-
-CLI parameter names are supported both with and without trailing dash: ```-scale 10``` and ```scale 10``` are both correct.
-Almost all options are supported, except ```pal``` and ```layercontainerid```.
 
 ### Simple Node.js converting example
 
@@ -231,7 +216,7 @@ var ImageTracer = require( __dirname + '/../imagetracer_v1.2.6' );
 var PNGReader = require( __dirname + '/PNGReader' );
 
 // Input and output filepaths / URLs
-var infilepath = __dirname + '/' + 'panda.png';
+var infilepath = __dirname + '/../testimages/panda.png';
 var outfilepath = __dirname + '/' + 'panda.svg';
 
 

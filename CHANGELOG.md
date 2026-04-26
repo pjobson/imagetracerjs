@@ -1,6 +1,13 @@
 ## Version history
 
+### 1.3.0
+ - NEW: Rewritten CLI with modern argument parsing (see [CLI.md](CLI.md))
+ - NEW: Support for JPG, GIF, BMP, TIFF, WEBP formats via ImageMagick
+ - FIXED: Grayscale images now convert correctly (was causing black box artifacts)
+ - CHANGED: Test images moved to `testimages/` directory
+
 ### 1.2.6
+ - NEW: [InkScape extension](https://inkscape.org/~MarioVoigt/%E2%98%85imagetracerjs-for-inkscape-1x)
  - FIXED: hole shape parent search (Issues #31 #39)
  - FIXED: Handle (absolute) paths in CLI correctly Issue #42
 
